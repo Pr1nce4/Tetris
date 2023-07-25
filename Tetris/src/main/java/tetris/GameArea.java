@@ -1,8 +1,10 @@
-package com.mycompany.tetris;
+package tetris;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 import javax.swing.JPanel;
+import tetrisblocks.*;
 
 public class GameArea extends JPanel
 {
@@ -13,6 +15,7 @@ public class GameArea extends JPanel
  
     
     private TetrisBlock block;
+    private TetrisBlock[] blocks;
     
     //get the game information from the place area
     public GameArea(JPanel placeholder, int columns)
@@ -27,11 +30,20 @@ public class GameArea extends JPanel
         gridRows = this.getBounds().height / gridCellSize;
         background = new Color[gridRows][gridColumns];
         
+        blocks = new TetrisBlock[]{ new IShape(),
+                                    new JShape(),
+                                    new ZShape(),
+                                    new LShape(),
+                                    new OShape(),
+                                    new SShape(),
+                                    new TShape(),
+        };
     }
     
     public void spawnBlock()
     {
-        block = new TetrisBlock (new int[][]{ {1,0}, {1,0}, {1,1}},Color.blue);
+        Random r = new Random();
+        block = blocks[r.nextInt( blocks.length)];
         block.spawn(gridColumns);
     }
     
@@ -89,6 +101,11 @@ public class GameArea extends JPanel
         
         if(block == null) return;
         block.Rotate();
+        
+        if(block.getLeftEdge()< 0 ) block.setX(0);
+        if(block.getRightEdge()>= gridColumns) block.setX(gridColumns - block.getWidth());
+        if(block.getBottomEdge() >= gridRows) block.setY( gridRows - block.getHeight() );
+        
         repaint();
     }
             

@@ -1,5 +1,5 @@
 
-package com.mycompany.tetris;
+package tetris;
 
 public class Tetris {
 
